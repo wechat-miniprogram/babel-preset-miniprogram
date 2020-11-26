@@ -1,0 +1,32 @@
+{
+  "name": "babel-preset-miniprogram",
+  "version": "1.0.0",
+  "description": "微信小程序 babel 构建环境预设",
+  "keywords": ["babel", "preset", "miniprogram", "preset-env"],
+  "main": "dist/index.js",
+  "files": [
+    "data/",
+    "dist/"
+  ],
+  "scripts": {
+    "build": "babel src -d dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "homepage": "https://github.com/wechat-miniprogram/babel-preset-miniprogram",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wechat-miniprogram/babel-preset-miniprogram"
+  },
+  "author": "chyizheng",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/helper-plugin-utils": "^7.10.4",
+    "@babel/preset-env": "^7.12.7",
+    "core-js-compat": "^3.8.0",
+    "semver": "^7.3.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.12.8",
+    "@babel/core": "^7.12.9"
+  }
+}
