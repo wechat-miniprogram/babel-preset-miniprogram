@@ -2,7 +2,12 @@
   "name": "babel-preset-miniprogram",
   "version": "1.0.0",
   "description": "微信小程序 babel 构建环境预设",
-  "keywords": ["babel", "preset", "miniprogram", "preset-env"],
+  "keywords": [
+    "babel",
+    "preset",
+    "miniprogram",
+    "preset-env"
+  ],
   "main": "dist/index.js",
   "files": [
     "data/",
@@ -23,6 +28,7 @@
     "@babel/helper-plugin-utils": "^7.10.4",
     "@babel/preset-env": "^7.12.7",
     "core-js-compat": "^3.8.0",
+    "miniprogram-compat": "^1.0.0",
     "semver": "^7.3.2"
   },
   "devDependencies": {
