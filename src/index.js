@@ -1,10 +1,10 @@
-const mpCompatData = require("miniprogram-compat");
-const corejsCompatData = require("core-js-compat");
-const babelPresetEnv = require("@babel/preset-env").default;
-const semver = require("semver");
-const declare = require("@babel/helper-plugin-utils").declare;
+import mpCompatData from "miniprogram-compat";
+import corejsCompatData from "core-js-compat";
+import babelPresetEnv from "@babel/preset-env";
+import semver from "semver";
+import { declare } from "@babel/helper-plugin-utils";
 
-module.exports = declare((api, opts, dirname) => {
+const babelPresetMiniprogram = declare((api, opts, dirname) => {
   api.assertVersion(7);
 
   const { wechatLibVersion, ...restOpts } = opts;
@@ -52,3 +52,5 @@ module.exports = declare((api, opts, dirname) => {
 
   return result;
 });
+
+export default babelPresetMiniprogram;

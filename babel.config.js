@@ -3,9 +3,9 @@ module.exports = {
     [
       "@babel/preset-env",
       {
-        targets: {
-          node: 8,
-        },
+        modules: "cjs",
+        loose: true,
+        targets: { node: 10 },
       },
     ],
   ],
