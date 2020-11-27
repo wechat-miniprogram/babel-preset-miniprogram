@@ -25,7 +25,7 @@ module.exports = declare((api, opts, dirname) => {
     );
   } else {
     // core js 3
-    const polyfillExcludeRegexps = polyfillExcludeModules.map(
+    const polyfillExcludeRegexps = (polyfillExcludeModules || []).map(
       (module) => new RegExp(`^${module}$`)
     );
     polyfillsToIgnore.push(
