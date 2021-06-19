@@ -1,5 +1,5 @@
 {
-  "name": "babel-preset-miniprogram",
+  "name": "babel-preset-mp",
   "version": "1.0.1",
   "description": "微信小程序 babel 构建环境预设",
   "keywords": [
@@ -17,10 +17,10 @@
     "build": "babel src -d dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "homepage": "https://github.com/wechat-miniprogram/babel-preset-miniprogram",
+  "homepage": "https://github.com/Genuifx/babel-preset-miniprogram",
   "repository": {
     "type": "git",
-    "url": "https://github.com/wechat-miniprogram/babel-preset-miniprogram"
+    "url": "https://github.com/Genuifx/babel-preset-miniprogram"
   },
   "author": "chyizheng",
   "license": "MIT",
@@ -29,7 +29,7 @@
     "@babel/preset-env": "^7.12.7",
     "core-js-compat": "^3.8.0",
     "miniprogram-compat": "^1.0.0",
-    "semver": "^7.3.2"
+    "semver": "^7.3.5"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.8",
