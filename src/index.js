@@ -7,7 +7,7 @@ import { declare } from "@babel/helper-plugin-utils";
 const babelPresetMiniprogram = declare((api, opts, dirname) => {
   api.assertVersion(7);
 
-  const { wechatLibVersion, ...restOpts } = opts;
+  let { wechatLibVersion, ...restOpts } = opts;
   wechatLibVersion = wechatLibVersion || "1.0.0";
 
   const browserslist = mpCompatData.getBrowsersList(wechatLibVersion);
