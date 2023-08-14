@@ -1,16 +1,13 @@
-// import mpCompatData from "miniprogram-compat";
+import mpCompatData from "miniprogram-compat";
 import corejsCompatData from "core-js-compat";
 import babelPresetEnv from "@babel/preset-env";
 import semver from "semver";
 import { declare } from "@babel/helper-plugin-utils";
 
-let mpCompatData = require( "miniprogram-compat" );
-if (!mpCompatData.getBrowsersList) mpCompatData = mpCompatData.default;
-
 const babelPresetMiniprogram = declare((api, opts, dirname) => {
   api.assertVersion(7);
 
-  let { wechatLibVersion, ...restOpts } = opts;
+  const { wechatLibVersion, ...restOpts } = opts;
   wechatLibVersion = wechatLibVersion || "1.0.0";
 
   const browserslist = mpCompatData.getBrowsersList(wechatLibVersion);

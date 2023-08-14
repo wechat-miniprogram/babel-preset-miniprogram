@@ -2,12 +2,10 @@
 
 微信小程序 babel 构建环境预设
 
-[官方repo地址](https://github.com/wechat-miniprogram/babel-preset-miniprogram)，该repo是官方包的修复版本。
-
 ## 安装
 
 ```bash
-npm install --save-dev babel-preset-mp
+npm install --save-dev babel-preset-miniprogram
 ```
 
 ## 使用
