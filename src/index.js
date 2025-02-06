@@ -11,26 +11,29 @@ const babelPresetMiniprogram = declare((api, opts, dirname) => {
   wechatLibVersion = wechatLibVersion || "1.0.0";
 
   const browserslist = mpCompatData.getBrowsersList(wechatLibVersion);
-  const {
-    coreJsVersion: polyfillCoreJsVersion,
-    exclude: polyfillExcludeModules,
-  } = mpCompatData.getPolyfillInfo(wechatLibVersion);
+  const polyfillInfo = mpCompatData.getPolyfillInfo(wechatLibVersion);
+
+  if (!browserslist || !polyfillInfo) {
+    throw new Error(
+      `Wechat mini program version ${wechatLibVersion} is invalid.`
+    );
+  }
 
   const polyfillsToIgnore = [];
 
-  if (semver.major(polyfillCoreJsVersion) < 3) {
+  if (semver.major(polyfillInfo.coreJsVersion) < 3) {
     // core js 2
     polyfillsToIgnore.push(
       ...require("../data/core-js-2-modules.json").modules
     );
   } else {
     // core js 3
-    const polyfillExcludeRegexps = (polyfillExcludeModules || []).map(
+    const polyfillExcludeRegexps = polyfillInfo.coreJsModules.map(
       (module) => new RegExp(`^${module}$`)
     );
     polyfillsToIgnore.push(
       ...corejsCompatData
-        .getModulesListForTargetVersion(polyfillCoreJsVersion)
+        .getModulesListForTargetVersion(polyfillInfo.coreJsVersion)
         .filter(
           (module) =>
             !polyfillExcludeRegexps.some((exclude) => exclude.test(module))

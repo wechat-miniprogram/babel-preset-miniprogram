@@ -5,7 +5,7 @@ describe("babel-preset-miniprogram", () => {
   test("oldest", () => {
     const { code } = babel.transformSync(
       `
-      export const a = () => {}
+      console.log(globalThis, () => {})
     `,
       {
         presets: [
@@ -22,73 +22,57 @@ describe("babel-preset-miniprogram", () => {
     expect(code).toMatchInlineSnapshot(`
 ""use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.a = void 0;
-var a = exports.a = function a() {};"
+require("core-js/modules/esnext.global-this.js");
+console.log(globalThis, function () {});"
 `);
   });
 
   test("latest", () => {
-    const { code } = babel.transformSync(
-      `
-      export const a = { ...b, c }
-      export const d = { c, ...d }
-
-      export const e = async (arg) => {
-        ''.padEnd(2)
-        await console.log(1)
-        console.log(2)
-        await console.log(3)
-      }
-
-      export class F {
-        foo () {
-          console.log('foo')
-        }
-      }
+    expect(
+  babel.transformSync(
+    `
+      console.log(globalThis, () => {}, new Promise())
     `,
+    {
+      presets: [
+      [
+      preset,
       {
-        presets: [
-          [
-            preset,
-            {
-              wechatLibVersion: "3.6.0",
-              useBuiltIns: "usage",
-            },
-          ],
-        ],
-      }
-    );
-    expect(code).toMatchInlineSnapshot(`
-  ""use strict";
+        wechatLibVersion: "2.16.1",
+        useBuiltIns: "usage"
+      }]]
 
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.e = exports.d = exports.a = exports.F = void 0;
-  const a = exports.a = {
-    ...b,
-    c
-  };
-  const d = exports.d = {
-    c,
-    ...d
-  };
-  const e = async arg => {
-    ''.padEnd(2);
-    await console.log(1);
-    console.log(2);
-    await console.log(3);
-  };
-  exports.e = e;
-  class F {
-    foo() {
-      console.log('foo');
+
     }
-  }
-  exports.F = F;"
-  `);
+  ).code
+).toMatchInlineSnapshot(`
+""use strict";
+
+require("core-js/modules/es.promise.js");
+require("core-js/modules/esnext.global-this.js");
+console.log(globalThis, () => {}, new Promise());"
+`);
+    expect(
+  babel.transformSync(
+    `
+      console.log(globalThis, () => {}, new Promise())
+    `,
+    {
+      presets: [
+      [
+      preset,
+      {
+        wechatLibVersion: "3.6.0",
+        useBuiltIns: "usage"
+      }]]
+
+
+    }
+  ).code
+).toMatchInlineSnapshot(`
+""use strict";
+
+console.log(globalThis, () => {}, new Promise());"
+`);
   });
 });
