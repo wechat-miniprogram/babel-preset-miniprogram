@@ -1,4 +1,4 @@
-import mpCompatData from "miniprogram-compat";
+import * as mpCompatData from "miniprogram-compat";
 import corejsCompatData from "core-js-compat";
 import babelPresetEnv from "@babel/preset-env";
 import semver from "semver";
