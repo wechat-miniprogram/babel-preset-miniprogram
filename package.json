@@ -1,6 +1,6 @@
 {
   "name": "babel-preset-miniprogram",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "微信小程序 babel 构建环境预设",
   "keywords": [
     "babel",
