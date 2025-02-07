@@ -1,6 +1,6 @@
 {
   "name": "babel-preset-miniprogram",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "微信小程序 babel 构建环境预设",
   "keywords": [
     "babel",
@@ -37,6 +37,7 @@
   "devDependencies": {
     "@babel/cli": "^7.12.8",
     "@babel/core": "^7.26.7",
+    "core-js": "^3.40.0",
     "jest": "^29.7.0"
   }
 }

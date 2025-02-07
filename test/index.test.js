@@ -1,78 +1,255 @@
 import * as babel from "@babel/core";
-import preset from "../dist/index";
+import preset from "../src/index";
+import corejsPkg from "core-js/package.json";
+
+const corejs = corejsPkg.version;
 
 describe("babel-preset-miniprogram", () => {
-  test("oldest", () => {
-    const { code } = babel.transformSync(
-      `
-      console.log(globalThis, () => {})
-    `,
-      {
-        presets: [
-          [
-            preset,
-            {
-              wechatLibVersion: "1.0.0",
-              useBuiltIns: "usage",
-            },
-          ],
-        ],
-      }
-    );
-    expect(code).toMatchInlineSnapshot(`
-""use strict";
+  describe("oldest", () => {
+    test("promise.finally", () => {
+      expect(
+        babel.transformSync(
+          `
+            var p = Promise.resolve(0);
+            p.finally(() => {
+              alert("OK");
+            });
+          `,
+          {
+            presets: [
+              [
+                preset,
+                {
+                  wechatLibVersion: "1.0.0",
+                  useBuiltIns: "usage",
+                  corejs,
+                },
+              ],
+            ],
+          }
+        ).code
+      ).toMatchInlineSnapshot(`
+        ""use strict";
 
-require("core-js/modules/esnext.global-this.js");
-console.log(globalThis, function () {});"
-`);
+        require("core-js/modules/es.promise.finally.js");
+        var p = Promise.resolve(0);
+        p.finally(function () {
+          alert("OK");
+        });"
+      `);
+    });
+    test("globalThis", () => {
+      expect(
+        babel.transformSync(
+          `
+            if (globalThis) alert("OK");
+          `,
+          {
+            presets: [
+              [
+                preset,
+                {
+                  wechatLibVersion: "1.0.0",
+                  useBuiltIns: "usage",
+                  corejs,
+                },
+              ],
+            ],
+          }
+        ).code
+      ).toMatchInlineSnapshot(`
+        ""use strict";
+
+        require("core-js/modules/es.global-this.js");
+        if (globalThis) alert("OK");"
+      `);
+    });
+    test("entry", () => {
+      expect(
+        babel.transformSync(
+          `
+            import 'core-js/es/aggregate-error';
+            import 'core-js/es/object/assign';
+            import 'core-js/es/object/create';
+            import 'core-js/es/object/define-properties';
+            import 'core-js/es/object/define-property';
+            import 'core-js/es/object/entries';
+            import 'core-js/es/object/from-entries';
+            import 'core-js/es/object/get-own-property-descriptors';
+            import 'core-js/es/object/has-own';
+            import 'core-js/es/global-this';
+            import 'core-js/es/promise';
+            import 'core-js/es/promise/all-settled';
+            import 'core-js/es/promise/any';
+            import 'core-js/es/promise/finally';
+            import 'core-js/es/promise/try';
+            import 'core-js/es/promise/with-resolvers';
+          `,
+          {
+            presets: [
+              [
+                preset,
+                {
+                  wechatLibVersion: "1.0.0",
+                  useBuiltIns: "entry",
+                  corejs,
+                },
+              ],
+            ],
+          }
+        ).code
+      ).toMatchInlineSnapshot(`
+        ""use strict";
+
+        require("core-js/modules/es.aggregate-error.js");
+        require("core-js/modules/es.global-this.js");
+        require("core-js/modules/es.object.entries.js");
+        require("core-js/modules/es.object.from-entries.js");
+        require("core-js/modules/es.object.get-own-property-descriptors.js");
+        require("core-js/modules/es.object.has-own.js");
+        require("core-js/modules/es.promise.all-settled.js");
+        require("core-js/modules/es.promise.any.js");
+        require("core-js/modules/es.promise.finally.js");
+        require("core-js/modules/es.promise.try.js");
+        require("core-js/modules/es.promise.with-resolvers.js");"
+      `);
+    });
   });
 
-  test("latest", () => {
-    expect(
-  babel.transformSync(
-    `
-      console.log(globalThis, () => {}, new Promise())
-    `,
-    {
-      presets: [
-      [
-      preset,
-      {
-        wechatLibVersion: "2.16.1",
-        useBuiltIns: "usage"
-      }]]
+  describe("corejs 3", () => {
+    test("promise.finally", () => {
+      expect(
+        babel.transformSync(
+          `
+            var p = Promise.resolve(0);
+            p.finally(() => {
+              alert("OK");
+            });
+          `,
+          {
+            presets: [
+              [
+                preset,
+                {
+                  wechatLibVersion: "2.16.1",
+                  useBuiltIns: "usage",
+                  corejs,
+                },
+              ],
+            ],
+          }
+        ).code
+      ).toMatchInlineSnapshot(`
+        ""use strict";
 
+        var p = Promise.resolve(0);
+        p.finally(() => {
+          alert("OK");
+        });"
+      `);
+    });
+    test("globalThis", () => {
+      expect(
+        babel.transformSync(
+          `
+            if (globalThis) alert("OK");
+          `,
+          {
+            presets: [
+              [
+                preset,
+                {
+                  wechatLibVersion: "2.16.1",
+                  useBuiltIns: "usage",
+                  corejs,
+                },
+              ],
+            ],
+          }
+        ).code
+      ).toMatchInlineSnapshot(`
+        ""use strict";
 
-    }
-  ).code
-).toMatchInlineSnapshot(`
-""use strict";
+        require("core-js/modules/es.global-this.js");
+        if (globalThis) alert("OK");"
+      `);
+    });
+    test("entry", () => {
+      expect(
+        babel.transformSync(
+          `
+            import 'core-js/es/aggregate-error';
+            import 'core-js/es/object/entries';
+            import 'core-js/es/object/from-entries';
+            import 'core-js/es/object/get-own-property-descriptors';
+            import 'core-js/es/object/has-own';
+            import 'core-js/es/global-this';
+            import 'core-js/es/promise';
+            import 'core-js/es/promise/all-settled';
+            import 'core-js/es/promise/any';
+            import 'core-js/es/promise/finally';
+            import 'core-js/es/promise/try';
+            import 'core-js/es/promise/with-resolvers';
+          `,
+          {
+            presets: [
+              [
+                preset,
+                {
+                  wechatLibVersion: "2.16.1",
+                  useBuiltIns: "entry",
+                  corejs,
+                },
+              ],
+            ],
+          }
+        ).code
+      ).toMatchInlineSnapshot(`
+        ""use strict";
 
-require("core-js/modules/es.promise.js");
-require("core-js/modules/esnext.global-this.js");
-console.log(globalThis, () => {}, new Promise());"
-`);
-    expect(
-  babel.transformSync(
-    `
-      console.log(globalThis, () => {}, new Promise())
-    `,
-    {
-      presets: [
-      [
-      preset,
-      {
-        wechatLibVersion: "3.6.0",
-        useBuiltIns: "usage"
-      }]]
+        require("core-js/modules/es.aggregate-error.js");
+        require("core-js/modules/es.global-this.js");
+        require("core-js/modules/es.object.has-own.js");
+        require("core-js/modules/es.promise.all-settled.js");
+        require("core-js/modules/es.promise.any.js");
+        require("core-js/modules/es.promise.try.js");
+        require("core-js/modules/es.promise.with-resolvers.js");"
+      `);
+      expect(
+        babel.transformSync(
+          `
+            import 'core-js/es/aggregate-error';
+            import 'core-js/es/object/entries';
+            import 'core-js/es/object/from-entries';
+            import 'core-js/es/object/get-own-property-descriptors';
+            import 'core-js/es/object/has-own';
+            import 'core-js/es/global-this';
+            import 'core-js/es/promise';
+            import 'core-js/es/promise/all-settled';
+            import 'core-js/es/promise/any';
+            import 'core-js/es/promise/finally';
+            import 'core-js/es/promise/try';
+            import 'core-js/es/promise/with-resolvers';
+          `,
+          {
+            presets: [
+              [
+                preset,
+                {
+                  wechatLibVersion: "3.6.1",
+                  useBuiltIns: "entry",
+                  corejs,
+                },
+              ],
+            ],
+          }
+        ).code
+      ).toMatchInlineSnapshot(`
+        ""use strict";
 
-
-    }
-  ).code
-).toMatchInlineSnapshot(`
-""use strict";
-
-console.log(globalThis, () => {}, new Promise());"
-`);
+        require("core-js/modules/es.promise.try.js");
+        require("core-js/modules/es.promise.with-resolvers.js");"
+      `);
+    });
   });
 });

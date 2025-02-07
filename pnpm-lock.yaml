@@ -28,6 +28,9 @@ devDependencies:
   '@babel/core':
     specifier: ^7.26.7
     version: 7.26.7
+  core-js:
+    specifier: ^3.40.0
+    version: 3.40.0
   jest:
     specifier: ^29.7.0
     version: 29.7.0
@@ -2012,6 +2015,11 @@ packages:
     dependencies:
       browserslist: 4.24.4
     dev: false
+
+  /core-js@3.40.0:
+    resolution: {integrity: sha512-7vsMc/Lty6AGnn7uFpYT56QesI5D2Y/UkgKounk87OP9Z2H9Z8kj6jzcSGAxFmUtDOS0ntK6lbQz+Nsa0Jj6mQ==}
+    requiresBuild: true
+    dev: true
 
   /create-jest@29.7.0:
     resolution: {integrity: sha512-Adz2bdH0Vq3F53KEMJOoftQFutWCukm6J24wbPWRO4k1kMY7gS7ds/uoJkNuV8wDCtWWnuwGcJwpWcih+zEW1Q==}

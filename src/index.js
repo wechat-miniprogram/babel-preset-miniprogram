@@ -19,6 +19,12 @@ const babelPresetMiniprogram = declare((api, opts, dirname) => {
     );
   }
 
+  if (semver.major(restOpts.corejs) < 3) {
+    throw new Error(
+      `babel-preset-miniprogram only support core-js@3.`
+    );
+  }
+
   const polyfillsToIgnore = [];
 
   if (semver.major(polyfillInfo.coreJsVersion) < 3) {
@@ -28,27 +34,21 @@ const babelPresetMiniprogram = declare((api, opts, dirname) => {
     );
   } else {
     // core js 3
-    const polyfillExcludeRegexps = polyfillInfo.coreJsModules.map(
-      (module) => new RegExp(`^${module}$`)
-    );
     polyfillsToIgnore.push(
       ...corejsCompatData
         .getModulesListForTargetVersion(polyfillInfo.coreJsVersion)
-        .filter(
-          (module) =>
-            !polyfillExcludeRegexps.some((exclude) => exclude.test(module))
-        )
+        .filter((module) => polyfillInfo.coreJsModules.indexOf(module) !== -1)
     );
   }
 
   const result = babelPresetEnv(
     api,
     {
+      corejs: 3,
       ...restOpts,
       ignoreBrowserslistConfig: true,
       exclude: (restOpts.exclude || []).concat(polyfillsToIgnore),
       targets: browserslist,
-      corejs: 3,
     },
     dirname
   );
